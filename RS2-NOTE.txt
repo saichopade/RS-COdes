@@ -1,0 +1,59 @@
+# Import Required Libraries
+import pandas as pd
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import linear_kernel
+
+# Step 1: Load the Dataset
+# Replace 'movie_dataset.csv' with the actual path to your dataset
+movies_df = pd.read_csv('/content/drive/MyDrive/RS Practical 2/movie_dataset.csv')
+
+# Step 2: Preprocess the Data
+# Fill any missing values in the 'genres', 'overview', and 'tagline' columns
+movies_df['genres'] = movies_df['genres'].fillna('')
+movies_df['overview'] = movies_df['overview'].fillna('')
+movies_df['tagline'] = movies_df['tagline'].fillna('')
+
+# Combine 'genres', 'overview', and 'tagline' into a single content column
+movies_df['content'] = (
+    movies_df['genres'] + ' ' + movies_df['overview'] + ' ' + movies_df['tagline']
+)
+
+# Step 3: Create a TF-IDF Vectorizer and Compute the Similarity Matrix
+tfidf = TfidfVectorizer(stop_words='english')
+tfidf_matrix = tfidf.fit_transform(movies_df['content'])
+
+# Compute the cosine similarity matrix
+cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
+
+# Step 4: Build the Recommendation Function
+def get_recommendations(title, cosine_sim=cosine_sim, movies_df=movies_df):
+    # Check if the movie title exists in the dataset
+    if title not in movies_df['title'].values:
+        return ["Movie not found in database."]
+
+    # Get the index of the movie that matches the title
+    idx = movies_df[movies_df['title'] == title].index[0]
+
+    # Get the pairwise similarity scores of all movies with that movie
+    sim_scores = list(enumerate(cosine_sim[idx]))
+
+    # Sort the movies based on the similarity scores
+    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+
+    # Get the scores of the top 10 most similar movies
+    sim_scores = sim_scores[1:11]  # Exclude the movie itself
+
+    # Get the movie indices
+    movie_indices = [i[0] for i in sim_scores]
+
+    # Return the top 10 most similar movies
+    return movies_df['title'].iloc[movie_indices].tolist()
+
+# Step 5: Evaluate the Recommendation System
+# Example: Get recommendations for a specific movie
+movie_title = "Spectre"  # Replace with any movie title from your dataset
+recommended_movies = get_recommendations(movie_title)
+
+print(f"Recommendations for '{movie_title}':")
+for movie in recommended_movies:
+    print(movie)

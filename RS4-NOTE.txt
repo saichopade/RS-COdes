@@ -1,0 +1,46 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.datasets import load_breast_cancer
+import numpy as np
+
+#Step 2: Loading the Breast Cancer dataset
+data = load_breast_cancer()
+df = pd.DataFrame(data.data, columns=data.feature_names)
+df['target'] = data.target # target: 0 = malignant, 1 = benign
+
+# Step 3: Data Preprocessing (optional, depending on dataset)
+# In this case, the data is already preprocessed, but further normalization or feature selection may be added.
+# Step 4: Splitting the data into train and test sets
+X = df.drop(columns='target') # features
+y = df['target'] # target variable
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+
+# Step 5: Training the model
+model = RandomForestClassifier(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+# Step 6: Predicting and evaluating the model
+y_pred = model.predict(X_test)
+accuracy = accuracy_score(y_test, y_pred)
+print("Model Accuracy:", accuracy)
+print("\nClassification Report:\n", classification_report(y_test, y_pred))
+print("Confusion Matrix:\n", confusion_matrix(y_test, y_pred))
+
+# Step 7: Making recommendations based on prediction outcomes
+def prognosis_recommendation(features):
+    """ 
+    Function to provide prognosis recommendation based on model predictions.
+    :param features: Array of patient features
+    :return: String recommendation
+    """
+    prediction = model.predict([features])
+    if prediction[0] == 0:
+        return "High risk of malignant cancer. Immediate consultation and further tests recommended."
+    else:
+        return "Benign results. Routine monitoring suggested, but follow up with a healthcare provider."
+
+# Example usage
+example_patient =X_test.iloc[0].values
+recommendation = prognosis_recommendation(example_patient)
+print("Recommendation:", recommendation)
