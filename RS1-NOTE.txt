@@ -163,3 +163,82 @@ predicted_values = yield_model.predict(random_sample)
 for actual, predicted in zip(true_values, predicted_values):
     print(f"Actual: {actual:.2f}, Predicted: {predicted:.2f}")
 
+
+
+
+
+1. Image Classification Using CNN
+
+Dataset Paths and Preprocessing
+Directories Defined:
+    healthy_dir: Directory for healthy leaf images.
+    late_blight_dir: Directory for images affected by late blight.
+Image Preprocessing:
+    Images are resized to 64x64 and normalized to pixel values in the range [0, 1].
+
+Loading Images and Labels
+    load_images_from_directory(directory, label):
+    Loads images from the specified directory.
+    Converts images into arrays using img_to_array.
+    Assigns the specified label (e.g., 0 for healthy, 1 for late blight).
+
+Data Preparation
+Images and labels from both categories are combined into X and y.
+Data is split into training (80%) and testing (20%) sets using train_test_split.
+
+Model Definition
+A Convolutional Neural Network (CNN) is defined with the following layers:
+    Convolutional layers with ReLU activation.
+    MaxPooling layers for dimensionality reduction.
+    Fully connected (Dense) layers for classification.
+    Output layer with a sigmoid activation for binary classification.
+Compiled using:
+    Optimizer: Adam.
+    Loss Function: Binary crossentropy.
+    Metric: Accuracy.
+
+Training the Model
+Trained for 5 epochs with a batch size of 10.
+20% of the training data is used for validation.
+
+Model Evaluation
+Model accuracy is evaluated on the test set, and accuracy is printed.
+
+Prediction on Test Images
+    predict_random_sample:
+    Selects a random test image.
+    Predicts the label using the trained model.
+display_prediction:
+Displays the test image along with its actual and predicted labels.
+
+2. Yield Prediction Using Random Forest
+Dataset and Preprocessing
+    Reads a CSV file containing agricultural data (e.g., temperature, yield).
+    Drops missing values and converts non-numeric fields to numeric if necessary.
+
+Data Preparation
+    Features (X) and target (y) are separated.
+    Data is split into training (80%) and testing (20%) sets.
+
+Model Training
+A Random Forest Regressor is trained with 100 estimators.
+
+Model Evaluation
+Predictions are made on the test set.
+Metrics used:
+    Mean Squared Error (MSE).
+    R-squared (R²).
+
+Simple Recommendation System
+Provides recommendations based on:
+    Disease prediction (CNN model).
+    Yield prediction (Random Forest model).
+Example recommendations:
+    Apply pesticide if disease probability ≥ 0.5.
+    Improve irrigation for low yield (< 50 Q/acre).
+
+Key Features and Practical Implications
+Interdisciplinary Approach:Combines computer vision and regression analysis for agriculture.
+Real-World Application:Identifying plant diseases and predicting crop yields can assist in decision-making for farmers.
+Scalability:The CNN model can be extended to classify more diseases. Random Forest can incorporate additional agricultural parameters.
+
