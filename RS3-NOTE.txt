@@ -89,3 +89,104 @@ movie_title = 'The Godfather'  # Movie title for which we want recommendations
 print(f"Hybrid Recommendations for user {user_id} and movie '{movie_title}':")
 print(hybrid_recommendations(user_id, movie_title))
 
+
+
+
+
+1. Content Overview
+The goal of this script is to build a recommendation system based on a dataset of IMDB Top 250 Movies. 
+The script demonstrates:
+Content-Based Recommendations: Recommends movies based on their attributes like genre, tagline, and cast.
+Collaborative Filtering: Uses user-item interaction to find similar users and recommend movies.
+Hybrid Recommendations: Combines content-based and collaborative filtering for better recommendations.
+
+2. Dataset and Preprocessing
+Dataset Loading:
+The dataset (IMDB Top 250 Movies.csv) contains the following columns:
+    name (Movie Name), genre, tagline, casts, and rating.
+Rows with missing values are removed.
+
+Content Creation:
+A new column content is created by concatenating the genre, tagline, and casts columns. This serves as the basis for Content-Based Filtering.
+
+3. Content-Based Filtering
+Vectorization:
+The content column is vectorized using TF-IDF (Term Frequency-Inverse Document Frequency). This converts text into numerical vectors that represent the importance of terms within the dataset.
+
+Similarity Calculation:
+Cosine Similarity is computed between the TF-IDF vectors of movies. This measures the similarity between two movies based on their content.
+
+Recommendation Function:
+get_content_based_recommendations(title):
+    Finds the index of the input movie.
+    Retrieves the similarity scores of this movie with all other movies.
+    Sorts the movies by similarity and returns the top 5 similar movies.
+
+4. Collaborative Filtering
+User-Item Matrix:
+A pivot table is created where:
+    Rows represent movies (name).
+    Columns represent unique ratings (rating).
+This matrix is sparse, as not all movies have ratings for every possible value.
+
+Latent Factor Model:
+    SVD (Singular Value Decomposition) is applied to reduce the dimensionality of the user-item matrix.
+    Movies are represented as lower-dimensional latent factors, capturing their essential features.
+
+Recommendation Function:
+get_collaborative_recommendations(user_id):
+    Finds the latent vector of the user.
+    Computes cosine distances between the user and all other users.
+    Identifies similar users and recommends movies they have rated highly.
+
+5. Hybrid Recommendations
+Hybrid Functionality:
+hybrid_recommendations(user_id, title, alpha=0.5):
+    Combines Content-Based and Collaborative recommendations.
+    Adjusts the importance of each method using a weighting factor alpha.
+
+Implementation:
+    Content-based recommendations are obtained for the given movie title.
+    Collaborative recommendations are generated for the given user.
+    Both recommendations are merged and ranked by their relevance.
+
+6. Example Execution
+User Input:
+Example user_id: 1 (simulated user).
+Example movie_title: 'The Godfather'.
+
+Hybrid Output:
+Recommendations are displayed as a ranked list of movies based on their combined scores.
+
+7. Practical Implications
+Content-Based Strengths:
+Recommends movies based on their inherent attributes, making it effective for new users.
+Example: If you like The Godfather, it might recommend Goodfellas due to similar genres or cast members.
+
+Collaborative Strengths:
+Leverages user behavior to recommend movies that similar users have liked.
+Example: If User A and User B like similar movies, User A’s favorites can be suggested to User B.
+
+Hybrid Strengths:
+Combines the advantages of both approaches to mitigate their individual weaknesses.
+Example: Even if a movie lacks sufficient ratings (collaborative data), its content can still be used for recommendations.
+
+Key Components for Practical Examination
+
+Content-Based Filtering:
+Understanding of TF-IDF vectorization and cosine similarity.
+Ability to explain how movie attributes are used for recommendations.
+
+Collaborative Filtering:
+Familiarity with the concept of user-item interaction.
+Knowledge of SVD for dimensionality reduction.
+
+Hybrid Recommendations:
+Explain how the two methods are combined.
+Discuss the importance of balancing content-based and collaborative contributions (alpha).
+
+Practical Output:
+Be prepared to demonstrate the script by:
+Providing a movie name and user ID.
+Explaining the results of the hybrid recommendations.
+
