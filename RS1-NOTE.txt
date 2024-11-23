@@ -242,3 +242,43 @@ Interdisciplinary Approach:Combines computer vision and regression analysis for 
 Real-World Application:Identifying plant diseases and predicting crop yields can assist in decision-making for farmers.
 Scalability:The CNN model can be extended to classify more diseases. Random Forest can incorporate additional agricultural parameters.
 
+
+---------------------------------------------------------------------------------------------------------------------------
+ReLU
+The ReLU (Rectified Linear Unit) activation function is one of the most commonly used activation functions in neural networks, particularly in deep learning. It introduces non-linearity to the model, which is essential for the network to learn complex patterns.
+
+Definition:
+The ReLU function is defined as:
+f(x)={ x,if x>0
+       0,if x≤0 }
+​In simpler terms:
+If the input x is positive, the output is x (linear for x>0).
+If the input x is zero or negative, the output is 0
+---------------------------------------------------------------------------------------------------------------------------
+Random Forest
+Random Forest is a versatile and powerful machine learning algorithm used for both classification and regression tasks. It belongs to the family of ensemble methods, which combine multiple models to achieve better performance than individual models.
+
+How Random Forest Works---
+Base Algorithm: Decision Trees
+Random Forest is an ensemble of Decision Trees, which are simple, interpretable models that split the data recursively based on feature values.However, individual decision trees tend to overfit, especially on large and complex datasets.
+
+Ensemble Approach
+Random Forest builds multiple decision trees (typically hundreds or thousands) during training and combines their results to improve generalization and reduce overfitting.
+
+---Steps to Build a Random Forest
+
+Bootstrap Aggregation (Bagging):
+Random Forest uses bagging, a technique where multiple subsets of the original dataset are created by sampling with replacement.
+Each subset is used to train a different decision tree.
+
+Random Feature Selection:
+For each tree, only a random subset of features is considered for splitting at each node.
+This ensures diversity among the trees and reduces correlation between them.
+
+Prediction Aggregation:
+For classification: The final prediction is made by majority voting across all trees.
+For regression: The final prediction is the average of all tree outputs.
+--------------------------------------------------------------
+
+​
+
